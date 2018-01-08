@@ -4,15 +4,13 @@ import ListBooks from './ListBooks'
 import './App.css'
 
 class BooksApp extends React.Component {
-  state = {
-    /**
-     * TODO: Instead of using this state variable to keep track of which page
-     * we're on, use the URL in the browser's address bar. This will ensure that
-     * users can use the browser's back and forward buttons to navigate between
-     * pages, as well as provide a good URL they can bookmark and share.
-     */
-    showSearchPage: false,
-    books:[]
+  constructor() {
+    super()
+    this.state = {
+      showSearchPage: false,
+      books:[]
+    }
+    this.changeBookStatus = this.changeBookStatus.bind(this)
   }
 
   componentDidMount () {
@@ -21,9 +19,28 @@ class BooksApp extends React.Component {
     })
   }
 
+  changeBookStatus (bookStatus) {
+    let books = this.state.books
+    let newBooks = []
+    for(var i=0;i<books.length;i++){
+      console.log(books[i],bookStatus.id)
+      if (books[i].id === bookStatus.book.id){
+        books[i].shelf = bookStatus.shelf
+        //invoked changeAPI function
+        BooksAPI.update(books[i],bookStatus.shelf)
+      } 
+      newBooks.push(books[i])
+    }
+//    newBooks = books.map((book)=>(book.id === bookStatus.book.id?book.shelf=bookStatus.shelf:""))
+    this.setState({
+      books:newBooks
+    })
+  }
+
   render() {
     return (
       <div className="app">
+      {this.state.showSearchPage ? (
           <div className="search-books">
             <div className="search-books-bar">
               <a className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</a>
@@ -54,6 +71,7 @@ class BooksApp extends React.Component {
                 <div className="bookshelf">
                   <h2 className="bookshelf-title">Currently Reading</h2>
                   <ListBooks
+                  onChangeBookStatus={this.changeBookStatus}
                   books={this.state.books}
                   shelf="currentlyReading"
                   />
@@ -61,6 +79,7 @@ class BooksApp extends React.Component {
                 <div className="bookshelf">
                   <h2 className="bookshelf-title">Want to Read</h2>
                   <ListBooks
+                  onChangeBookStatus={this.changeBookStatus}
                   books={this.state.books}
                   shelf="wantToRead"
                   />
@@ -68,6 +87,7 @@ class BooksApp extends React.Component {
                 <div className="bookshelf">
                   <h2 className="bookshelf-title">Read</h2>
                   <ListBooks
+                  onChangeBookStatus={this.changeBookStatus}
                   books={this.state.books}
                   shelf="read"
                   />

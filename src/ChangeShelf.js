@@ -9,7 +9,12 @@ class ChangeShelf extends Component {
     }
 
     handleChange(event) {
-        this.setState({value: event.target.value});
+        this.props.onChangeShelf(
+            {
+            value:event.target.value,
+            book:this.props.book
+        }
+        );
       }
 
     render() {
