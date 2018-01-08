@@ -19,7 +19,7 @@ class ChangeShelf extends Component {
 
     render() {
         return(
-            <select value={this.state.value} onChange={this.handleChange}>
+            <select value={this.props.shelf} onChange={this.handleChange}>
                 <option value="none" disabled>Move to...</option>
                 <option value="currentlyReading">Currently Reading</option>
                 <option value="wantToRead">Want to Read</option>

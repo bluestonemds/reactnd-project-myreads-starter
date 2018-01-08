@@ -12,6 +12,7 @@ class ListBooks extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
+    console.log(nextProps)
        let currentBooks = nextProps.books.filter((book) => (book.shelf === this.props.shelf))
        this.setState({
        books:currentBooks
@@ -42,6 +43,7 @@ class ListBooks extends Component {
                            <ChangeShelf 
                            onChangeShelf={this.getValue}
                            book={book}
+                           shelf={this.props.shelf}
                            /> 
                         </div>
                       </div>
