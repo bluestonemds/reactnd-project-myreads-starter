@@ -70,15 +70,16 @@ class BooksApp extends React.Component {
       showingBooks = this.state.books
     }
     return (
+      <Route  path='/' render={({ history }) => (
       <div className="app">
       <Link
-            to='/search'
+            to='/sarch'
             className=''
             onClick={this.search}
           >Search books</Link>
       
       {this.state.showSearchPage && (
-        <Route exact path='/search' render={({ history }) => (
+        <Route path='/search' render={({ history }) => (
           <div className="search-books">
                 <div className="search-books-bar">
                 <Link
@@ -142,6 +143,7 @@ class BooksApp extends React.Component {
             </div>
           </div>
       </div>
+    )}/>
     )
   }
 }
