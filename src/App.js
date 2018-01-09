@@ -14,9 +14,6 @@ class BooksApp extends React.Component {
       books:[],
       query:''
     }
-    this.changeBookStatus = this.changeBookStatus.bind(this)
-    this.search = this.search.bind(this)
-    this.testSearch = this.testSearch.bind(this)
   }
 
   componentDidMount () {
@@ -25,10 +22,11 @@ class BooksApp extends React.Component {
     })
   }
 
-  changeBookStatus (bookStatus) {
+  changeBookStatus  = (bookStatus) => {
     let books = this.state.books
     let newBooks = []
     var index
+
     for(var i=0;i<books.length;i++){
       if (books[i].id === bookStatus.book.id){
         books[i].shelf = bookStatus.shelf
@@ -43,12 +41,8 @@ class BooksApp extends React.Component {
     ) 
   }
 
-  search(){
+  search = () => {
     this.setState({showSearchPage:!this.setState.showSearchPage})
-  }
-
-  testSearch(){
-    this.setState({showSearchPage:false})
   }
 
   updateQuery = (query) => {
@@ -70,22 +64,22 @@ class BooksApp extends React.Component {
       showingBooks = this.state.books
     }
     return (
-      <Route  path='/' render={({ history }) => (
+      <Route path='/' render={({ history }) => (
       <div className="app">
       <Link
-            to='/sarch'
-            className=''
+            to='/search'
+            className='search'
             onClick={this.search}
           >Search books</Link>
       
       {this.state.showSearchPage && (
-        <Route path='/search' render={({ history }) => (
+        <Route exact path='/search' render={() => (
           <div className="search-books">
                 <div className="search-books-bar">
                 <Link
                   to='/'
                   className='close-search'
-                  onClick={this.testSearch}
+                  onClick={this.search}
                 ></Link>
                 <div className="search-books-input-wrapper">
                   {/*
@@ -105,7 +99,6 @@ class BooksApp extends React.Component {
             </div> 
         )}/>
       )}
-  
           <div className="list-books">
             <div className="list-books-title">
               <h1>MyReads</h1>

@@ -8,7 +8,6 @@ class ListBooks extends Component {
       shelf: props.shelf,
       books: []
     }
-    this.getValue = this.getValue.bind(this)
   }
 
   componentWillReceiveProps (nextProps) {
@@ -18,7 +17,7 @@ class ListBooks extends Component {
     }) 
   }
 
-  getValue (shelf)  {
+  getValue  = (shelf) =>  {
       if (shelf.value !== 'none'){
       this.props.onChangeBookStatus(
         {
