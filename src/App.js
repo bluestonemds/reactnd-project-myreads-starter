@@ -1,4 +1,6 @@
 import React from 'react'
+import { Route } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import escapeRegExp from 'escape-string-regexp'
 import * as BooksAPI from './BooksAPI'
 import ListBooks from './ListBooks'
@@ -14,6 +16,7 @@ class BooksApp extends React.Component {
     }
     this.changeBookStatus = this.changeBookStatus.bind(this)
     this.search = this.search.bind(this)
+    this.testSearch = this.testSearch.bind(this)
   }
 
   componentDidMount () {
@@ -41,7 +44,11 @@ class BooksApp extends React.Component {
   }
 
   search(){
-    this.setState({showSearchPage:true})
+    this.setState({showSearchPage:!this.setState.showSearchPage})
+  }
+
+  testSearch(){
+    this.setState({showSearchPage:false})
   }
 
   updateQuery = (query) => {
@@ -56,34 +63,48 @@ class BooksApp extends React.Component {
     if (query) {
       const match = new RegExp(escapeRegExp(query), 'i')
       showingBooks = this.state.books.filter((book) => match.test(book.authors))
+      if (showingBooks.length === 0){
+        showingBooks = this.state.books.filter((book) => match.test(book.title))
+      }
     } else {
       showingBooks = this.state.books
     }
     return (
       <div className="app">
-      <button onClick={this.search}>search</button>
-     
+      <Link
+            to='/search'
+            className=''
+            onClick={this.search}
+          >Search books</Link>
+      
+      {this.state.showSearchPage && (
+        <Route exact path='/search' render={({ history }) => (
           <div className="search-books">
-            <div className="search-books-bar">
-              <a className="close-search" onClick={() => this.setState({ showSearchPage: false })}>Close</a>
-              <div className="search-books-input-wrapper">
-                {/*
-                  NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                  You can find these search terms here:
-                  https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
+                <div className="search-books-bar">
+                <Link
+                  to='/'
+                  className='close-search'
+                  onClick={this.testSearch}
+                ></Link>
+                <div className="search-books-input-wrapper">
+                  {/*
+                    NOTES: The search from BooksAPI is limited to a particular set of search terms.
+                    You can find these search terms here:
+                    https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
 
-                  However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                  you don't find a specific author or title. Every search is limited by search terms.
-                */}
-                <input type="text" value={this.state.query} onChange={(event) => this.updateQuery(event.target.value)} placeholder="Search by title or author"/>
-
+                    However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
+                    you don't find a specific author or title. Every search is limited by search terms.
+                  */}
+                  <input type="text" value={this.state.query} onChange={(event) => this.updateQuery(event.target.value)} placeholder="Search by title or author"/>
+                </div>
               </div>
-            </div>
-            <div className="search-books-results">
-              <ol className="books-grid"></ol>
-            </div>
-          </div>
-    
+              <div className="search-books-results">
+                <ol className="books-grid"></ol>
+              </div>
+            </div> 
+        )}/>
+      )}
+  
           <div className="list-books">
             <div className="list-books-title">
               <h1>MyReads</h1>
@@ -120,7 +141,6 @@ class BooksApp extends React.Component {
               <a onClick={() => this.setState({ showSearchPage: true })}>Add a book</a>
             </div>
           </div>
-      
       </div>
     )
   }
