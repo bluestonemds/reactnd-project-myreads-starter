@@ -43,14 +43,10 @@ body, .app {
   text-align: center;
 }
 
+
+
 .search {
-  display: block;
-  width: 130px;
-  padding: 8px;
-  background-color: #2e7c31;
-  color: #efefef;
   margin: 15px;
-  text-align: center;
 }
 
 .open-search {

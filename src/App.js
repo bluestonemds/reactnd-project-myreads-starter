@@ -24,25 +24,30 @@ class BooksApp extends React.Component {
 
   changeBookStatus  = (bookStatus) => {
     let books = this.state.books
-    let newBooks = []
-    var index
 
-    for(var i=0;i<books.length;i++){
-      if (books[i].id === bookStatus.book.id){
-        books[i].shelf = bookStatus.shelf
-        index = i
-      } 
-      newBooks.push(books[i])
-    }
-    BooksAPI.update(books[index],bookStatus.shelf).then(
+    books.map((book,index)=>{
+      if(book.id === bookStatus.book.id)
+      book.shelf = bookStatus.shelf
+    })
+
+    var preChangeBook = books.filter((book)=>(book.id === bookStatus.book.id))
+
+    BooksAPI.update(preChangeBook[0],bookStatus.shelf).then(
       this.setState({
-        books:newBooks
+        books:books
       })
     ) 
   }
 
   search = () => {
     this.setState({showSearchPage:!this.setState.showSearchPage})
+  }
+
+  clearQuery = () => {
+    this.setState({
+      showSearchPage:false,
+      query:''
+    }) 
   }
 
   updateQuery = (query) => {
@@ -64,14 +69,13 @@ class BooksApp extends React.Component {
       showingBooks = this.state.books
     }
     return (
-      <Route path='/' render={({ history }) => (
+     
       <div className="app">
       <Link
             to='/search'
-            className='search'
+            className='pure-button search'
             onClick={this.search}
           >Search books</Link>
-      
       {this.state.showSearchPage && (
         <Route exact path='/search' render={() => (
           <div className="search-books">
@@ -79,7 +83,7 @@ class BooksApp extends React.Component {
                 <Link
                   to='/'
                   className='close-search'
-                  onClick={this.search}
+                  onClick={this.clearQuery}
                 ></Link>
                 <div className="search-books-input-wrapper">
                   {/*
@@ -99,6 +103,7 @@ class BooksApp extends React.Component {
             </div> 
         )}/>
       )}
+      <Route path='/' render={({ history }) => (
           <div className="list-books">
             <div className="list-books-title">
               <h1>MyReads</h1>
@@ -135,8 +140,8 @@ class BooksApp extends React.Component {
               <a onClick={() => this.setState({ showSearchPage: true })}>Add a book</a>
             </div>
           </div>
-      </div>
     )}/>
+    </div>
     )
   }
 }
