@@ -51,20 +51,20 @@ class BooksApp extends React.Component {
   }
 
   updateQuery = (query) => {
-      this.setState({
+    this.setState({
         query:query.trim()
-      })
+      }
+    )
   }
 
   render() {
     let showingBooks
-    let query = this.state.query
-    if (query) {
-      const match = new RegExp(escapeRegExp(query), 'i')
-      showingBooks = this.state.books.filter((book) => match.test(book.authors))
-      if (showingBooks.length === 0){
-        showingBooks = this.state.books.filter((book) => match.test(book.title))
-      }
+    console.log(this.state.query)
+    if (this.state.query){
+      BooksAPI.search(this.state.query).then((result) => {
+        showingBooks = result
+      })
+      console.log(showingBooks)
     } else {
       showingBooks = this.state.books
     }
