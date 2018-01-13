@@ -4,15 +4,11 @@ class ChangeShelf extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {value: ''};
     }
 
     handleChange = (event) => {
         this.props.onChangeShelf(
-            {
-            value:event.target.value,
-            book:this.props.book
-        }
+            this.props.book,event.target.value
         );
       }
 
