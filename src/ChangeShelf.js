@@ -13,8 +13,14 @@ class ChangeShelf extends Component {
       }
 
     render() {
+        let shelf
+        if (!this.props.book.shelf){
+            shelf = 'none'
+        } else {
+            shelf = this.props.book.shelf
+        }
         return(
-            <select value={this.props.shelf} onChange={this.handleChange}>
+            <select value={shelf} onChange={this.handleChange}>
                 <option value="none" disabled>Move to...</option>
                 <option value="currentlyReading">Currently Reading</option>
                 <option value="wantToRead">Want to Read</option>

@@ -11,8 +11,8 @@ class BooksApp extends React.Component {
     super()
     this.state = {
       books:[]
-    }
   }
+}
 
   componentDidMount () {
     BooksAPI.getAll().then((books) => {
@@ -37,8 +37,19 @@ class BooksApp extends React.Component {
  
   handleSearch = (book) =>{
     if (book){
-      this.setState({
-        books:book
+      var homePageBooks 
+      BooksAPI.getAll().then((books) => {
+         for(let index=0;index<book.length;index++){
+          for(let i=0;i<books.length;i++){
+              if (books[i].id === book[index].id){
+                book[index].shelf = books[i].shelf
+                break
+              }
+            }
+          }
+          this.setState({
+            books:book
+          })
       })
     }
   }
@@ -53,10 +64,9 @@ class BooksApp extends React.Component {
     let books = this.state.books
     return (
       <div className="app">
-        <Link
-          to='/search'
-          className='pure-button search'
-        >Search books</Link>
+      <div className="open-search">
+         <Link to="/search" />
+      </div>
         <Route exact path="/" render={()=>(
             <BookList
             books={books}

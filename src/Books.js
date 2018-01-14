@@ -10,7 +10,7 @@ function Books(props) {
       }
 
       if (props.shelf ==='searchResult'){
-        books = props.books.filter((book) => (book.shelf !== 'currentlyReading' && book.shelf !== 'wantToRead' && book.shelf !=='read')) 
+        books = props.books
       }
         return (
         <div className="bookshelf-books">

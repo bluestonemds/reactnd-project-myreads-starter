@@ -13,17 +13,17 @@ class SearchPage extends Component {
         }
       }
 
-      updateQuery = (query) => {
+    updateQuery = (query) => {
         this.setState({
             query:query.trim()
-          }
-        )
-          BooksAPI.search(this.state.query).then((books)=>
-          this.props.onSearch(
-              books
-          )
-        )
-      }
+            } ,() => {
+            BooksAPI.search(query).then((books)=>
+                this.props.onSearch(
+                    books
+                )
+            )
+        })
+    }
 
     render () {
         let books
